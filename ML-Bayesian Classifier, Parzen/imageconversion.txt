@@ -1,0 +1,22 @@
+from scipy import misc
+import numpy as np
+import sklearn.preprocessing as processing
+
+ownDigits = []
+for i in range(0,10):
+    imagereal = misc.imread('G:/Final/'+str(i)+'.jpg',mode='L')
+    imagereal[imagereal>252] = 255
+    imagereal = np.array(imagereal).reshape(1,256)
+    ownDigits += [imagereal]
+    
+ownDigits = np.array(ownDigits).reshape(10,256)
+ownDigits = processing.minmax_scale(ownDigits,feature_range=(-1,1),axis = 1,copy=True)
+ownDigits = np.negative(ownDigits)
+    
+afile = open('G:/Fall2017/pattern recognition/ProgrammingAssignments/Programming 1/ownWritten.txt','w')
+for j in range(len(ownDigits)):
+    digits = ",".join([str(item) for item in ownDigits[j]])
+    print digits
+    afile.write(str(j)+','+str(digits)+'\n')
+    
+afile.close()
